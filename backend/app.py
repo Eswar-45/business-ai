@@ -74,7 +74,7 @@ def _is_place_in_location(place: dict, location: str) -> bool:
     return all(token in searchable for token in tokens)
 
 
-# ── ENDPOINT 1: Search outlets
+# ── ENDPOINT 1: Search outlets ──────────────────────────────────────────
 @app.post("/api/search")
 async def search_endpoint(req: SearchRequest):
     try:
@@ -92,7 +92,7 @@ async def search_endpoint(req: SearchRequest):
         raise HTTPException(502, f"Search failed: {e}")
 
 
-# ── ENDPOINT 2: Analyze selected outlet 
+# ── ENDPOINT 2: Analyze selected outlet ─────────────────────────────────
 @app.post("/api/analyze")
 async def analyze_endpoint(req: AnalyzeRequest):
     try:
@@ -155,13 +155,13 @@ async def analyze_endpoint(req: AnalyzeRequest):
         raise HTTPException(502, f"Analysis failed: {e}")
 
 
-# ── Mount frontend 
+# ── Mount frontend ───────────────────────────────────────────────────────
 frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
 if os.path.exists(frontend_path):
     app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
 
 
-# ── Run 
+# ── Run ──────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
 
