@@ -241,12 +241,14 @@ function App() {
             </>
           )}
         </div>
-        <HistoryPanel
-          history={chatHistory}
-          activeId={activeHistoryId}
-          onSelect={restoreHistoryItem}
-          onClear={clearHistory}
-        />
+        {currentView !== 'results' && (
+          <HistoryPanel
+            history={chatHistory}
+            activeId={activeHistoryId}
+            onSelect={restoreHistoryItem}
+            onClear={clearHistory}
+          />
+        )}
       </div>
       {isLoading && <LoadingOverlay step={loadingStep} />}
     </>

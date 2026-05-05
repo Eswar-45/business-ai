@@ -5,22 +5,32 @@
 }
 
 :root {
-  --dark-bg: #0f1419;
-  --darker-bg: #0a0e13;
-  --card-bg: #1a1f2e;
-  --accent-cyan: #00d9ff;
-  --accent-purple: #9d4edd;
-  --accent-pink: #ff006e;
-  --accent-blue: #00b4d8;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b8c1;
-  --text-muted: #7a8390;
-  --border-color: rgba(0, 217, 255, 0.1);
+  /* Dark, near-black base */
+  --dark-bg: #000000;
+  --darker-bg: #05040a;
+  --card-bg: #0f1115;
+
+  /* Google-like pastel accents */
+  --accent-cyan: #8ee9f6;    /* pastel cyan */
+  --accent-purple: #c7b8ff;  /* pastel purple */
+  --accent-pink: #ffb3d6;    /* pastel pink */
+  --accent-blue: #9fe8ff;    /* soft pastel blue */
+
+  --text-primary: #f7fbff;
+  --text-secondary: #d0d8de;
+  --text-muted: #9aa4ae;
+  --border-color: rgba(199, 184, 255, 0.06);
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
+  /* width used by the fixed history panel on desktop */
+  --history-width: 360px;
+  /* compact header height used to position the history panel */
+  --header-height: 64px;
+  /* max width for the header content (navbar) to keep it narrow on large screens */
+  --header-max-width: 1000px;
 }
 
 html, body {
@@ -31,7 +41,8 @@ html, body {
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 50%, #1a0033 100%);
+  /* Mostly black background with a subtle color wash for depth */
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #070017 60%, #0b0018 100%);
   color: var(--text-primary);
   line-height: 1.6;
   font-size: 14px;
@@ -84,39 +95,43 @@ body::before {
 
 /* Header */
 .header {
-  background: rgba(10, 14, 19, 0.8);
-  border-bottom: 2px solid var(--border-color);
-  padding: var(--spacing-xl) var(--spacing-lg);
+  background: rgba(6, 8, 10, 0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  /* narrower horizontal padding for a tighter navbar */
+  padding: 8px 16px;
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  height: var(--header-height);
 }
 
 .header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--spacing-xl);
-  max-width: 1600px;
+  gap: var(--spacing-md);
+  max-width: var(--header-max-width);
   margin: 0 auto;
+  padding: 0 8px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  font-size: 28px;
+  gap: 8px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .logo-icon {
-  font-size: 32px;
+  font-size: 20px;
   background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -124,7 +139,7 @@ body::before {
 }
 
 .tagline {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
   letter-spacing: 0.5px;
@@ -133,23 +148,60 @@ body::before {
 
 /* Sidebar History */
 .history-panel {
+  /* Fixed at the top-right so it doesn't move when pages change */
   position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 320px;
-  height: 50vh;
-  background: linear-gradient(180deg, rgba(26, 31, 46, 0.95) 0%, rgba(10, 14, 19, 0.98) 100%);
-  border: 1px solid var(--border-color);
-  border-radius: 20px 20px 0 0;
+  top: calc(72px + 12px); /* leave space for header */
+  left: 20px;
+  width: var(--history-width);
+  height: calc(100vh - 120px);
+  background: linear-gradient(180deg, rgba(20, 22, 28, 0.96) 0%, rgba(10, 12, 16, 0.98) 100%);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 14px;
   padding: var(--spacing-lg);
-  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
   overflow-y: auto;
-  z-index: 90;
-  box-shadow: 0 -8px 32px rgba(0, 217, 255, 0.1);
-  transition: all 0.3s ease;
+  z-index: 99;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(143, 119, 255, 0.06);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  transition: all 0.22s cubic-bezier(.2,.9,.2,1);
+}
+
+.history-panel.collapsed {
+  width: 120px;
+  height: auto;
+  left: 20px;
+  overflow: hidden;
+  padding: 12px;
+}
+
+@media (max-width: 980px) {
+  .history-panel {
+    position: fixed;
+    left: 12px; 
+    right: 12px; 
+    top: auto;
+    bottom: 12px;
+    width: auto;
+    height: 240px;
+    border-radius: 12px;
+  }
+}
+
+/* Reserve space on the right for the fixed history panel on wide screens */
+@media (min-width: 981px) {
+  /* Reserve left-side space for the fixed history panel */
+  .main-content {
+    padding-left: calc(var(--history-width) + 56px);
+  }
+  /* also nudge the app shell so edge borders aren't under the panel */
+  .app-shell {
+    padding-left: 8px;
+  }
 }
 
 .history-hdr {
@@ -170,7 +222,7 @@ body::before {
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--accent-cyan);
+  color: var(--accent-purple);
   margin-bottom: var(--spacing-xs);
 }
 
@@ -189,8 +241,8 @@ body::before {
 
 .history-item {
   padding: var(--spacing-md);
-  background: rgba(0, 217, 255, 0.05);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255,255,255,0.03);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -199,15 +251,15 @@ body::before {
 }
 
 .history-item:hover {
-  background: rgba(0, 217, 255, 0.1);
-  border-color: var(--accent-cyan);
-  transform: translateX(4px);
+  background: linear-gradient(90deg, rgba(143,119,255,0.06) 0%, rgba(142,233,246,0.04) 100%);
+  border-color: rgba(143,119,255,0.16);
+  transform: translateX(4px) scale(1.01);
 }
 
 .history-item.active {
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.15) 0%, rgba(157, 78, 221, 0.15) 100%);
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 12px rgba(0, 217, 255, 0.2);
+  background: linear-gradient(135deg, rgba(199,184,255,0.12) 0%, rgba(143,119,255,0.08) 100%);
+  border-color: rgba(143,119,255,0.18);
+  box-shadow: 0 8px 28px rgba(143,119,255,0.06);
 }
 
 .history-item-q {
@@ -241,10 +293,11 @@ body::before {
 
 /* Cards */
 .card {
-  background: linear-gradient(135deg, rgba(26, 31, 46, 0.7) 0%, rgba(26, 31, 46, 0.4) 100%);
-  border: 1px solid var(--border-color);
+  background: linear-gradient(135deg, rgba(18, 20, 24, 0.95) 0%, rgba(14, 16, 20, 0.85) 100%);
+  border: 1px solid rgba(255,255,255,0.03);
   border-radius: 16px;
   padding: var(--spacing-xl);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   max-width: 600px;
@@ -253,9 +306,9 @@ body::before {
 }
 
 .card:hover {
-  background: rgba(26, 31, 46, 0.8);
-  border-color: rgba(0, 217, 255, 0.3);
-  box-shadow: 0 8px 24px rgba(0, 217, 255, 0.1);
+  background: rgba(18, 20, 24, 1);
+  border-color: rgba(143,119,255,0.06);
+  box-shadow: 0 18px 48px rgba(143,119,255,0.06);
   transform: translateY(-2px);
 }
 
@@ -263,7 +316,7 @@ body::before {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: var(--spacing-lg);
-  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -337,7 +390,7 @@ input[type="text"]::placeholder {
   gap: var(--spacing-md);
   width: 100%;
   padding: 14px 24px;
-  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+  background: linear-gradient(90deg, var(--accent-cyan) 0%, var(--accent-purple) 60%, var(--accent-pink) 100%);
   color: var(--darker-bg);
   border: none;
   border-radius: 8px;
@@ -773,6 +826,7 @@ input[type="text"]::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
 
@@ -784,6 +838,7 @@ input[type="text"]::placeholder {
   text-align: center;
   max-width: 360px;
   width: 90%;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
