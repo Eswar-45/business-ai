@@ -1,10 +1,12 @@
 function Header() {
   return (
-    <header className="hdr">
-      <div className="hdr-logo">R</div>
-      <div>
-        <h1 className="hdr-brand">Revio</h1>
-        <p className="hdr-sub">RAG-powered local business intelligence</p>
+    <header className="header">
+      <div className="header-content">
+        <div className="logo">
+          <span className="logo-icon">⚡</span>
+          <h1>Revio</h1>
+        </div>
+        <p className="tagline">AI-Powered Business Insights</p>
       </div>
     </header>
   )

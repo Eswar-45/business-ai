@@ -195,14 +195,8 @@ function App() {
     <>
       <div className="noise"></div>
       <div className="app-shell">
-        <HistoryPanel
-          history={chatHistory}
-          activeId={activeHistoryId}
-          onSelect={restoreHistoryItem}
-          onClear={clearHistory}
-        />
-        <div className="page">
-          <Header />
+        <Header />
+        <div className="main-content">
           {currentView === 'search' && (
             <SearchCard
               form={searchForm}
@@ -214,22 +208,45 @@ function App() {
             />
           )}
           {currentView === 'outlets' && (
-            <OutletsList
-              places={allPlaces}
-              searchTerm={chatHistory.find(h => h.id === activeHistoryId)?.searchTerm}
-              onSelect={analyzePlace}
-              onBack={resetToSearch}
-            />
+            <>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1200px', marginBottom: '24px' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '700', background: 'linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Search Results</h2>
+                <button onClick={resetToSearch} className="btn-ghost" style={{ alignSelf: 'auto' }}>← Back</button>
+              </div>
+              <div className="outlet-cards-grid">
+                {allPlaces.map((place, idx) => (
+                  <OutletsList
+                    key={place.name}
+                    places={[place]}
+                    index={idx + 1}
+                    searchTerm={chatHistory.find(h => h.id === activeHistoryId)?.searchTerm}
+                    onSelect={() => analyzePlace(place)}
+                  />
+                ))}
+              </div>
+            </>
           )}
           {currentView === 'results' && selectedPlace && (
-            <ResultsView
-              place={selectedPlace}
-              analysis={chatHistory.find(h => h.id === activeHistoryId)?.analysis}
-              question={searchForm.question}
-              onBack={backToOutlets}
-            />
+            <>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '600px', marginBottom: '24px' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '700', background: 'linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Analysis Results</h2>
+                <button onClick={backToOutlets} className="btn-ghost" style={{ alignSelf: 'auto' }}>← Back</button>
+              </div>
+              <ResultsView
+                place={selectedPlace}
+                analysis={chatHistory.find(h => h.id === activeHistoryId)?.analysis}
+                question={searchForm.question}
+                onBack={backToOutlets}
+              />
+            </>
           )}
         </div>
+        <HistoryPanel
+          history={chatHistory}
+          activeId={activeHistoryId}
+          onSelect={restoreHistoryItem}
+          onClear={clearHistory}
+        />
       </div>
       {isLoading && <LoadingOverlay step={loadingStep} />}
     </>
