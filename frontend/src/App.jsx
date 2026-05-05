@@ -7,7 +7,7 @@ import HistoryPanel from './components/HistoryPanel'
 import LoadingOverlay from './components/LoadingOverlay'
 
 const API = ""
-const HISTORY_KEY = "reviewlens.chatHistory.v1"
+const HISTORY_KEY = "revio.chatHistory.v1"
 const HISTORY_LIMIT = 30
 
 function App() {
