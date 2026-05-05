@@ -13,7 +13,7 @@ def _get_client():
         model  = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
     else:
         client = OpenAI(api_key=key, base_url="https://api.x.ai/v1")
-        model  = os.getenv("XAI_MODEL", "grok-beta")
+        model  = os.getenv("XAI_MODEL", "llama-3.1-8b-instant")
     print(f"[llm] using model={model}")
     return client, model
 
